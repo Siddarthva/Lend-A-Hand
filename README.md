@@ -1,13 +1,13 @@
-Lend a Hand – Service Booking PlatformLend a Hand is a vertical SaaS platform designed to bridge the trust gap between homeowners and local service professionals. It provides a seamless digital infrastructure for discovery, booking, and communication in the service economy.Built as a founder-led initiative by Siddarth V Acharya, this project demonstrates end-to-end full-stack ownership, focusing on scalability, user experience, and modern web architecture.🚀 Key FeaturesService Discovery: Browse verified professionals across categories (Cleaning, Plumbing, Electrical, etc.) with rich filtering.Smart Booking Engine: Conflict-free date and time slot selection with immediate confirmation logic.User Dashboard: Centralized view for managing upcoming, pending, and past bookings.Real-time Communication: Integrated chat interface for direct provider-client coordination.Provider Onboarding: Streamlined waitlist flow for service professionals joining the platform.Personalization: Global theme management (Light/Dark modes) and dynamic accent color selection.Data Persistence: LocalStorage integration for persisting user sessions, bookings, and preferences without a backend (Demo Mode).🛠️ Tech StackThis project is built with a focus on performance, modularity, and modern React patterns.Frontend Framework: React 18Build Tool: ViteStyling: Tailwind CSSIcons: Lucide ReactState Management: React Context API + HooksRouting: Custom State-based Router (SPA)📦 Installation & SetupTo run this project locally, follow these steps:Clone the repositorygit clone [https://github.com/yourusername/lend-a-hand.git](https://github.com/yourusername/lend-a-hand.git)
-cd lend-a-hand
-Install Dependenciesnpm install
-Run Development Servernpm run dev
-Build for Productionnpm run build
-📂 Project Structuresrc/
-├── components/         # Reusable UI components (Buttons, Modals, Cards)
-├── context/           # Global state management (Auth, Theme, Data)
-├── pages/             # Route views (Landing, Dashboard, Services)
-├── assets/            # Static assets and icons
-├── App.jsx            # Main application orchestrator
-└── main.jsx           # Entry point
-🎨 Design SystemThe application utilizes a custom design system implemented via Tailwind CSS utility classes:Typography: Sans-serif system font stack for optimal legibility.Color Palette: Neutral grays for structure, with user-selectable accent colors (Indigo, Rose, Teal, Orange, Violet).Dark Mode: Native support using CSS variables and Tailwind's dark: modifier.🤝 CollaborationLend a Hand is currently an early-stage, founder-led product. While we are not hiring for full-time roles, we welcome:Open Source contributionsInternship applications (Frontend/Backend)Technical collaborationsPlease reach out via the Collaboration Page within the app.👤 AuthorSiddarth V AcharyaFounder & Full-Stack EngineerLinkedInGitHubEmail📄 LicenseThis project is licensed under the MIT License - see the LICENSE file for details.Note: This is a portfolio/MVP project. No real payments are processed, and service providers listed are for demonstration purposes only.
+# Lend-A-Hand
+
+<p align="center">
+  <img src="https://img.shields.io/badge/React-18-61dafb?style=flat-square&logo=react">
+  <img src="https://img.shields.io/badge/Vite-Build-646cff?style=flat-square&logo=vite">
+  <img src="https://img.shields.io/badge/TailwindCSS-38bdf8?style=flat-square&logo=tailwindcss">
+</p>
+
+A modern service booking platform connecting homeowners with trusted local professionals.  
+Built with a focus on clean UI, smart scheduling, and seamless user experience.
+
+**Tech:** React • Vite • Tailwind CSS • Context API  
+*Portfolio/MVP project — demo data only.*
