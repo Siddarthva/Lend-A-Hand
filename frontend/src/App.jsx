@@ -1,51 +1,71 @@
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import { AppProvider, useApp } from './contexts/AppContext';
-import { AuthProvider } from './contexts/AuthContext';
-import { BookingProvider } from './contexts/BookingContext';
-import { NotificationProvider } from './contexts/NotificationContext';
-import { MessagingProvider } from './contexts/MessagingContext';
+import { AuthProvider } from '@/features/auth/AuthContext';
+import { BookingProvider } from '@/features/bookings/BookingContext';
+import { NotificationProvider } from '@/features/messaging/NotificationContext';
+import { MessagingProvider } from '@/features/messaging/MessagingContext';
 
-// Layout
-import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
-import ToastContainer from './components/layout/ToastContainer';
+// Components
+import ErrorBoundary from './components/ErrorBoundary';
 import NotificationPanel from './components/NotificationPanel';
+import LoadingPage from './components/layout/LoadingPage';
 
-// Pages — listed alphabetically
-import AuthPage from './pages/AuthPage';
-import LandingPage from './pages/LandingPage';
-import ServicesPage from './pages/ServicesPage';
-import ServiceDetailPage from './pages/ServiceDetailPage';
-import BookingWizard from './pages/BookingWizard';
-import PaymentPage from './pages/PaymentPage';
-import DashboardPage from './pages/DashboardPage';
-import ReviewPage from './pages/ReviewPage';
-import ChatPage from './pages/ChatPage';
-import ProfilePage from './pages/ProfilePage';
-import ProviderDashboard from './pages/ProviderDashboard';
-import AdminPanel from './pages/AdminPanel';
-import SettingsPage from './pages/SettingsPage';
-import InvoicePage from './pages/InvoicePage';
+// Layout Shells
+import PublicLayout from '@/components/layout/PublicLayout';
+import DashboardLayout from '@/components/layout/DashboardLayout';
+import AuthLayout from '@/components/layout/AuthLayout';
+
+// Lazy-loaded Pages
+const LandingPage = lazy(() => import('@/features/services/LandingPage'));
+const ServicesPage = lazy(() => import('@/features/services/ServicesPage'));
+const ServiceDetailPage = lazy(() => import('@/features/services/ServiceDetailPage'));
+const AuthPage = lazy(() => import('@/features/auth/AuthPage'));
+const BookingWizard = lazy(() => import('@/features/bookings/BookingWizard'));
+const PaymentPage = lazy(() => import('@/features/bookings/PaymentPage'));
+const DashboardPage = lazy(() => import('@/features/dashboard/DashboardPage'));
+const ReviewPage = lazy(() => import('@/features/services/ReviewPage'));
+const ChatPage = lazy(() => import('@/features/messaging/ChatPage'));
+const ProfilePage = lazy(() => import('@/features/profile/ProfilePage'));
+const ProviderDashboard = lazy(() => import('@/features/admin/ProviderDashboard'));
+const AdminPanel = lazy(() => import('@/features/admin/AdminPanel'));
+const SettingsPage = lazy(() => import('@/features/settings/SettingsPage'));
+const InvoicePage = lazy(() => import('@/features/bookings/InvoicePage'));
 
 // --------------------------------------------------------------------------
-// ROUTER — pure state machine, no external dependencies
+// ROUTER ENGINE
 // --------------------------------------------------------------------------
-const NO_FOOTER_VIEWS = ['chat', 'booking-wizard'];
-const NO_NAVBAR_VIEWS = ['booking-wizard'];
-
 const Router = () => {
   const { view, viewParams } = useApp();
   const [notifOpen, setNotifOpen] = useState(false);
 
-  const showNavbar = !NO_NAVBAR_VIEWS.includes(view);
-  const showFooter = !NO_FOOTER_VIEWS.includes(view);
+  // Define Layout Wrappers
+  const layoutMap = {
+    // Auth Shell (no Navbar/Footer)
+    login: AuthLayout,
+    register: AuthLayout,
+    'booking-wizard': AuthLayout,
 
-  const renderPage = () => {
+    // Dashboard Shell
+    dashboard: DashboardLayout,
+    profile: DashboardLayout,
+    chat: DashboardLayout,
+    settings: DashboardLayout,
+    'provider-dashboard': DashboardLayout,
+    admin: DashboardLayout,
+    review: DashboardLayout,
+
+    // Public/Special
+    default: PublicLayout
+  };
+
+  const Layout = layoutMap[view] || layoutMap.default;
+
+  const renderContent = () => {
     switch (view) {
       // Public
       case 'landing': return <LandingPage />;
-      case 'services': return <ServicesPage initialCategory={viewParams.category} initialQuery={viewParams.query} />;
-      case 'service-detail': return <ServiceDetailPage serviceId={viewParams.serviceId} />;
+      case 'services': return <ServicesPage {...viewParams} />;
+      case 'service-detail': return <ServiceDetailPage {...viewParams} />;
 
       // Auth
       case 'login': return <AuthPage initialMode="login" />;
@@ -53,59 +73,51 @@ const Router = () => {
 
       // Booking flow
       case 'booking-wizard': return <BookingWizard />;
-      case 'payment': return <PaymentPage booking={viewParams.booking} />;
-      case 'invoice': return <InvoicePage booking={viewParams.booking} txnId={viewParams.txnId} method={viewParams.method} />;
-      case 'review': return <ReviewPage booking={viewParams.booking} />;
+      case 'payment': return <PaymentPage {...viewParams} />;
+      case 'invoice': return <InvoicePage {...viewParams} />;
+      case 'review': return <ReviewPage {...viewParams} />;
 
-      // Customer
+      // Dashboards & Profile
       case 'dashboard': return <DashboardPage />;
       case 'profile': return <ProfilePage />;
-      case 'chat': return <ChatPage chatId={viewParams.chatId} />;
+      case 'chat': return <ChatPage {...viewParams} />;
       case 'settings': return <SettingsPage />;
-
-      // Provider
       case 'provider-dashboard': return <ProviderDashboard />;
-
-      // Admin
       case 'admin': return <AdminPanel />;
 
-      // Fallback
       default: return <LandingPage />;
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
-      {showNavbar && (
-        <Navbar onNotificationOpen={() => setNotifOpen(true)} />
-      )}
-      <NotificationPanel isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
-
-      <main className="flex-1">
-        {renderPage()}
-      </main>
-
-      {showFooter && <Footer />}
-      <ToastContainer />
-    </div>
+    <ErrorBoundary>
+      <Layout onNotificationOpen={() => setNotifOpen(true)}>
+        <NotificationPanel isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
+        <Suspense fallback={<LoadingPage />}>
+          {renderContent()}
+        </Suspense>
+      </Layout>
+    </ErrorBoundary>
   );
 };
 
 // --------------------------------------------------------------------------
-// ROOT — provider composition (outermost → innermost)
+// PROVIDER STACK
 // --------------------------------------------------------------------------
 const App = () => (
-  <AppProvider>
-    <AuthProvider>
-      <NotificationProvider>
-        <MessagingProvider>
-          <BookingProvider>
-            <Router />
-          </BookingProvider>
-        </MessagingProvider>
-      </NotificationProvider>
-    </AuthProvider>
-  </AppProvider>
+  <ErrorBoundary>
+    <AppProvider>
+      <AuthProvider>
+        <NotificationProvider>
+          <MessagingProvider>
+            <BookingProvider>
+              <Router />
+            </BookingProvider>
+          </MessagingProvider>
+        </NotificationProvider>
+      </AuthProvider>
+    </AppProvider>
+  </ErrorBoundary>
 );
 
 export default App;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Tag, X, ChevronRight } from 'lucide-react';
-import { useApp } from '../contexts/AppContext';
-import { validateCoupon } from '../utils/mockApi';
+import { useApp } from '@/contexts/AppContext';
+import { validateCoupon } from '@/utils/mockApi';
 import Button from './ui/Button';
 
 const PromoBanner = () => {

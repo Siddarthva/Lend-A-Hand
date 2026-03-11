@@ -1,7 +1,7 @@
 import React from 'react';
 import { X, Bell, CheckCheck, Trash2, Calendar, MessageSquare, Tag, AlertCircle } from 'lucide-react';
-import { useNotifications } from '../contexts/NotificationContext';
-import { useApp } from '../contexts/AppContext';
+import { useNotifications } from '@/features/messaging/NotificationContext';
+import { useApp } from '@/contexts/AppContext';
 import Button from './ui/Button';
 import EmptyState from './ui/EmptyState';
 

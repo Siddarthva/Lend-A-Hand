@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const Skeleton = ({ className = '', rounded = 'rounded-lg' }) => (
-    <div className={`animate-pulse bg-gray-200 dark:bg-gray-700 ${rounded} ${className}`} />
+    <div className={`animate-shimmer bg-gray-200 dark:bg-gray-800/50 ${rounded} ${className}`} />
 );
 
 export const SkeletonText = ({ lines = 3, className = '' }) => (

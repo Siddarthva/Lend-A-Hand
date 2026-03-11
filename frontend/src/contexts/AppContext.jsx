@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { ACCENT_COLORS } from '../data/mockData';
-import { storage } from '../utils/storage';
+import { ACCENT_COLORS } from '@/data/mockData';
+import { storage } from '@/utils/storage';
 
 const AppContext = createContext();
 

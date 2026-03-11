@@ -1,6 +1,6 @@
 import React from 'react';
 import { Shield, Linkedin, Github, Mail } from 'lucide-react';
-import { useApp } from '../../contexts/AppContext';
+import { useApp } from '@/contexts/AppContext';
 
 const Footer = () => {
     const { navigateTo } = useApp();

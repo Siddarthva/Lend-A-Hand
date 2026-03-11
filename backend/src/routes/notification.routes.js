@@ -1,0 +1,13 @@
+import { Router } from 'express';
+import * as notifCtrl from '../controllers/notification.controller.js';
+import { protect } from '../middleware/auth.js';
+
+const router = Router();
+
+router.use(protect);
+
+router.get('/', notifCtrl.getNotifications);
+router.patch('/:id/read', notifCtrl.markRead);
+router.patch('/read-all', notifCtrl.markAllRead);
+
+export default router;

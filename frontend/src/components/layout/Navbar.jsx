@@ -3,10 +3,10 @@ import {
     Shield, Search, Bell, MessageSquare, Settings, LogOut,
     Menu, X, Calendar, ChevronDown, User, LayoutDashboard, Briefcase,
 } from 'lucide-react';
-import { useApp } from '../../contexts/AppContext';
-import { useAuth } from '../../contexts/AuthContext';
-import { useNotifications } from '../../contexts/NotificationContext';
-import { useMessaging } from '../../contexts/MessagingContext';
+import { useApp } from '@/contexts/AppContext';
+import { useAuth } from '@/features/auth/AuthContext';
+import { useNotifications } from '@/features/messaging/NotificationContext';
+import { useMessaging } from '@/features/messaging/MessagingContext';
 import Badge from '../ui/Badge';
 import Button from '../ui/Button';
 
@@ -62,8 +62,8 @@ const Navbar = ({ onNotificationOpen }) => {
                                 key={link.view}
                                 onClick={() => navTo(link.view)}
                                 className={`text-sm font-medium transition-colors ${view === link.view
-                                        ? themeClasses.text[accentColor]
-                                        : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+                                    ? themeClasses.text[accentColor]
+                                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
                                     }`}
                             >
                                 {link.label}

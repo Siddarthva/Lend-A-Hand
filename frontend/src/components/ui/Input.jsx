@@ -1,5 +1,5 @@
 import React from 'react';
-import { useApp } from '../../contexts/AppContext';
+import { useApp } from '@/contexts/AppContext';
 
 const Input = ({ label, error, helper, className = '', ...props }) => {
     const { accentColor, themeClasses } = useApp();

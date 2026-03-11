@@ -1,6 +1,6 @@
 import React from 'react';
 import { CheckCircle, XCircle, Bell, Info } from 'lucide-react';
-import { useApp } from '../../contexts/AppContext';
+import { useApp } from '@/contexts/AppContext';
 
 const ICONS = {
     success: <CheckCircle size={18} className="text-green-500 shrink-0" />,
